@@ -47,20 +47,20 @@ export function DashboardSidebar() {
 
   return (
     <aside
-      className={`relative flex flex-col border-r border-slate-200/80 bg-white transition-all duration-300 ease-in-out z-20 ${
+      className={`relative flex flex-col border-r border-slate-200/80 bg-[#0C1B2E] transition-all duration-300 ease-in-out z-20 ${
         isCollapsed ? 'w-20' : 'w-64'
       }`}
     >
       {/* Brand Header */}
-      <div className="flex h-16 items-center justify-between px-4 border-b border-slate-100">
+      <div className="flex h-16 items-center justify-between px-4 border-b border-slate-600 bg-[#0C1B2E]">
         <Link href="/dashboard" className="flex items-center gap-3 overflow-hidden">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-tr from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20">
             <Bot className="h-5 w-5" />
           </div>
           {!isCollapsed && (
-            <div className="flex flex-col">
+            <div className="flex flex-col ">
               <span className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1">
-                ChatEngine <Sparkles className="h-3 w-3 text-amber-500 fill-amber-500" />
+                <img src="/logo.png" alt="Logo" className="w-[80%] h-auto" />
               </span>
               <span className="text-[11px] font-medium text-slate-400">Agent Suite</span>
             </div>
@@ -69,7 +69,7 @@ export function DashboardSidebar() {
 
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="hidden md:flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors shadow-xs"
+          className="hidden md:flex h-7 w-7 items-center justify-center rounded-lg  text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors shadow-xs"
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
