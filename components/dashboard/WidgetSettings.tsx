@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Upload, 
   Copy, 
@@ -20,6 +20,16 @@ export function WidgetSettings() {
   const [primaryColor, setPrimaryColor] = useState<string>('#2563eb');
   const [logoUrl, setLogoUrl] = useState<string>('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80');
   const [isCopied, setIsCopied] = useState<boolean>(false);
+
+  // State to store the detected domain dynamically
+  const [domain, setDomain] = useState<string>('');
+
+  useEffect(() => {
+    // Detect the domain dynamically
+    if (typeof window !== 'undefined') {
+      setDomain(window.location.origin);
+    }
+  }, []);
 
   const COLOR_PRESETS = [
     { name: 'Blue', hex: '#2563eb' },
@@ -41,14 +51,14 @@ export function WidgetSettings() {
   };
 
   const generatedSnippet = `<script>
-  (function() {
-    var iframe = document.createElement('iframe');
-    iframe.src = "https://your-domain.com/embed/widget?appId=${appId}&color=${encodeURIComponent(primaryColor)}";
-    iframe.style.cssText = "position:fixed;bottom:20px;right:20px;width:380px;height:600px;border:none;z-index:999999;border-radius:16px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.1);";
-    iframe.id = "chat-widget-iframe";
-    document.body.appendChild(iframe);
-  })();
-</script>`;
+    (function() {
+      var iframe = document.createElement('iframe');
+      iframe.src = "${domain}/embed/widget?appId=${appId}&color=${encodeURIComponent(primaryColor)}&botName=${encodeURIComponent(botName)}&welcomeMessage=${encodeURIComponent(welcomeMessage)}&logoUrl=${encodeURIComponent(logoUrl)}";
+      iframe.style.cssText = "position:fixed;bottom:20px;right:20px;width:380px;height:600px;border:none;z-index:999999;border-radius:16px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.1);";
+      iframe.id = "chat-widget-iframe";
+      document.body.appendChild(iframe);
+    })();
+  </script>`;
 
   const handleCopySnippet = () => {
     navigator.clipboard.writeText(generatedSnippet);
