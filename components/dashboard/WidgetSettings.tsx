@@ -57,6 +57,21 @@ export function WidgetSettings() {
       iframe.style.cssText = "position:fixed;bottom:20px;right:20px;width:380px;height:600px;border:none;z-index:999999;border-radius:16px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.1);";
       iframe.id = "chat-widget-iframe";
       document.body.appendChild(iframe);
+
+      // Listen for resize messages from the iframe widget
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'CHAT_WIDGET_RESIZE') {
+        if (event.data.isOpen) {
+          iframe.style.width = '380px';
+          iframe.style.height = '600px';
+          iframe.style.boxShadow = '0 10px 25px -5px rgba(0,0,0,0.1)';
+        } else {
+          iframe.style.width = '70px';
+          iframe.style.height = '70px';
+          iframe.style.boxShadow = 'none';
+        }
+      }
+    });
     })();
   </script>`;
 

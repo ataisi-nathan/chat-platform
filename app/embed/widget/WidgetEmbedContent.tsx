@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Send, Sparkles, X, MessageSquare } from 'lucide-react';
 
 export default function WidgetEmbedContent() {
   const searchParams = useSearchParams();
 
-  // Read URL params passed from the embed script / settings
   const appId = searchParams.get('appId') || 'app_live_8f93a02c';
   const color = searchParams.get('color') || '#2563eb';
   const botName = searchParams.get('botName') || 'Support Bot';
@@ -19,6 +18,17 @@ export default function WidgetEmbedContent() {
   const [messages, setMessages] = useState([
     { id: 'm1', sender: 'bot', text: welcomeMessage },
   ]);
+
+  // Send message to host page whenever open state changes
+  const toggleWidget = (openState: boolean) => {
+    setIsOpen(openState);
+    if (typeof window !== 'undefined' && window.parent) {
+      window.parent.postMessage(
+        { type: 'CHAT_WIDGET_RESIZE', isOpen: openState },
+        '*'
+      );
+    }
+  };
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,10 +43,10 @@ export default function WidgetEmbedContent() {
 
   if (!isOpen) {
     return (
-      <div className="flex h-screen w-full items-end justify-end p-4 bg-transparent">
+      <div className="flex h-screen w-full items-end justify-end p-0 bg-transparent">
         <button
-          onClick={() => setIsOpen(true)}
-          className="h-14 w-14 rounded-full text-white flex items-center justify-center shadow-2xl transition-transform hover:scale-105 active:scale-95"
+          onClick={() => toggleWidget(true)}
+          className="h-14 w-14 rounded-full text-white flex items-center justify-center shadow-2xl transition-transform hover:scale-105 active:scale-95 cursor-pointer"
           style={{ backgroundColor: color }}
         >
           <MessageSquare className="h-7 w-7" />
@@ -47,7 +57,7 @@ export default function WidgetEmbedContent() {
 
   return (
     <div className="flex h-screen w-full flex-col bg-white overflow-hidden font-sans text-gray-800">
-      {/* Header matching Live Preview */}
+      {/* Header */}
       <div 
         className="p-4 text-white flex items-center justify-between transition-colors duration-300 shadow-sm"
         style={{ backgroundColor: color }}
@@ -64,14 +74,15 @@ export default function WidgetEmbedContent() {
           </div>
         </div>
         <button 
-          onClick={() => setIsOpen(false)}
-          className="text-white/80 hover:text-white p-1 rounded-lg transition-colors"
+          onClick={() => toggleWidget(false)}
+          className="text-white/80 hover:text-white p-1 rounded-lg transition-colors cursor-pointer"
+          title="Close chat"
         >
           <X className="h-5 w-5" />
         </button>
       </div>
 
-      {/* Messages Feed matching Live Preview */}
+      {/* Messages Feed */}
       <div className="flex-1 p-4 bg-gray-50/50 overflow-y-auto space-y-3 text-xs">
         {messages.map((msg) => {
           const isBot = msg.sender === 'bot';
