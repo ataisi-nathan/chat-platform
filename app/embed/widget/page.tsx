@@ -1,8 +1,9 @@
 // app/embed/widget/page.tsx
 import { Suspense } from 'react';
-import WidgetEmbedContent from './WidgetEmbedContent';
+import ChatWidget from './WidgetEmbedContent';
 
 export default function WidgetEmbedPage() {
+  
   return (
     <Suspense
       fallback={
@@ -11,7 +12,7 @@ export default function WidgetEmbedPage() {
         </div>
       }
     >
-      <WidgetEmbedContent />
+      <ChatWidget />
     </Suspense>
   );
 }

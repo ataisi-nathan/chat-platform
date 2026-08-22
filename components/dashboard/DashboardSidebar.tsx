@@ -12,7 +12,7 @@ import {
   ChevronRight, 
   Sparkles,
   HelpCircle,
-  BarChart3
+  BrainIcon
 } from 'lucide-react';
 
 interface NavItem {
@@ -35,9 +35,9 @@ const NAV_ITEMS: NavItem[] = [
     icon: Sliders,
   },
   {
-    label: 'Analytics',
-    href: '/dashboard/analytics',
-    icon: BarChart3,
+    label: 'Knowledge Base',
+    href: '/dashboard/knowledge-base',
+    icon: BrainIcon,
   },
 ];
 
